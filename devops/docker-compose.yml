@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  db:
+    container_name: permaculture_mysql
+    image: jeremiedubuis/permaculture:dev_mysql
+    ports:
+      - "8001:3306"
+    volumes:
+      - /var/www/sql:/var/lib/mysql
+  node:
+    container_name: permaculture_node
+    image: jeremiedubuis/permaculture:dev_node
+    environment:
+      - SQL_PORT="8001"
+      - SQL_SERVER="37.187.21.224"
+    ports:
+      - "8000:3000"
