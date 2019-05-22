@@ -1,0 +1,10 @@
+[
+  {
+    "model": "Article",
+    "data": {
+      "slug": "new",
+      "title": "New",
+      "content": ""
+    }
+  }
+]

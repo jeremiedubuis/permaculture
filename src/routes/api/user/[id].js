@@ -1,13 +1,13 @@
 import db from '../../../api/db';
 import { getToken } from '../../../api/helpers/tokens';
 
-const notFound = (res) => {
+const error = (res, message) => {
     res.writeHead(404, {
         'Content-Type': 'application/json'
     });
 
     res.end(JSON.stringify({
-        message: `Not found`
+        message
     }));
 };
 
@@ -24,11 +24,11 @@ export const get = (req, res) => {
 
                 res.end(JSON.stringify(page));
             } else {
-                notFound(res);
+                error(res, 'Not found');
             }
         });
     } else {
-        notFound(res);
+        error(res, 'Forbidden');
     }
 };
 

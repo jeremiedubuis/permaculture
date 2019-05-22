@@ -21,5 +21,6 @@ const db = {
 
 db.sequelize.sync({ force: true }).then(() => {
     sequelizeFixtures.loadFile('static/fixtures/users.json', db.models);
+    sequelizeFixtures.loadFile('static/fixtures/pages.json', db.models);
 });
 export default db;

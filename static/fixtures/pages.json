@@ -1,0 +1,10 @@
+[
+  {
+    "model": "Page",
+    "data": {
+      "slug": "home",
+      "title": "Home",
+      "content": ""
+    }
+  }
+]
