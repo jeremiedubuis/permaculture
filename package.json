@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "dev": "sapper dev",
+    "dev": "sapper dev --stream",
     "build": "sapper build",
     "export": "sapper export",
-    "start": "node __sapper__/build"
+    "start": "node __sapper__/build --stream"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

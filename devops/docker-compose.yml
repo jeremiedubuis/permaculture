@@ -7,11 +7,13 @@ services:
       - "8001:3306"
     volumes:
       - /var/www/sql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
   node:
     container_name: permaculture_node
     image: jeremiedubuis/permaculture:dev_node
     environment:
       - SQL_PORT="8001"
-      - SQL_SERVER="37.187.21.224"
+      - SQL_SERVER="http://37.187.21.224"
     ports:
       - "8000:3000"
