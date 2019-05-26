@@ -1,13 +1,13 @@
-import db from '../../../api/db';
+import Article from '../../../api/models/Article'
 
 export async function get(req, res) {
-    db.models.Article.findAll().then(function(articles) {
-        res.writeHead(200, {
-            'Content-Type': 'application/json'
-        });
+    const { results } = await Article.get();
 
-        res.end(JSON.stringify(articles));
+    res.writeHead(200, {
+        'Content-Type': 'application/json'
     });
+
+    res.end(JSON.stringify(results));
 }
 
 export async function post() {

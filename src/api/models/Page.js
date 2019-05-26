@@ -1,22 +1,21 @@
-export default (sequelize, DataTypes) => {
+import Model from './classes/Model';
+import {STRING} from './classes/Field';
 
-    const Page = sequelize.define('Page', {
-        slug: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        title: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        content: {
-            type: DataTypes.STRING
-        }
-    });
+const page = new Model('pages', [
+    {
+        name: 'slug',
+        type: STRING,
+        isRequired: true
+    },
+    {
+        name: 'title',
+        type: STRING,
+        isRequired: true
+    },
+    {
+        name: 'content',
+        type: STRING
+    }
+]);
 
-    Page.getFromSlug = (slug, cb) =>
-        Page.findOne({ where: { slug } }).then(project => cb(project));
-
-    return Page;
-};
-
+export default page;

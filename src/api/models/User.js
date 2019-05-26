@@ -1,49 +1,45 @@
 import hash from '../helpers/hash';
 import { secret } from '../config';
 import jwt from 'jsonwebtoken';
+import Model from './classes/Model';
+import {EMAIL, STRING} from './classes/Field';
 
-export default (sequelize, DataTypes) => {
+class User extends Model {
+    async authenticate(email, password) {
+        const { results, fields } = await this.get({ where: { email } });
+        if (hash(password, results[0].password))
+            return User.authorize(results[0].id, results[0].email);
+        throw new Error('invalid password');
+    }
 
-    const User = sequelize.define('User', {
-        email: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        },
-        username: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }
-    });
-
-    User.prototype.authorize = function() {
-        const user = this;
-        const token = jwt.sign({
-                id: user.id,
-                email: user.email
+    static authorize(id, email) {
+        return jwt.sign({
+                id: id,
+                email: email
             },
             secret,
             { expiresIn: '24h' }
         );
-        return { user, token }
-    };
+    }
+}
 
-    User.authenticate = async (email, password) => {
+const user = new User('users', [
+    {
+        name: 'email',
+        type: EMAIL,
+        isRequired: true
+    },
+    {
+        name: 'username',
+        type: STRING,
+        isRequired: true
+    },
+    {
+        name: 'password',
+        type: STRING,
+        isRequired: true,
+        isPrivate: true
+    }
+]);
 
-        const user = await User.findOne({ where: { email } });
-
-        if (hash(password, user.password)) {
-            return user.authorize();
-        }
-
-        throw new Error('invalid password');
-    };
-
-    return User;
-
-};
+export default user;

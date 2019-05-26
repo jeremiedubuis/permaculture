@@ -1,7 +1,7 @@
-import db from '../../../api/db';
+import User from '../../../api/models/User';
 import { getToken } from '../../../api/helpers/tokens';
 
-const error = (res, message) => {
+function error (res, message) {
     res.writeHead(404, {
         'Content-Type': 'application/json'
     });
@@ -9,34 +9,32 @@ const error = (res, message) => {
     res.end(JSON.stringify({
         message
     }));
-};
+}
 
-export const get = (req, res) => {
-
+export async function get(req, res) {
     const { id } = req.params;
     const tokenData = getToken(req);
     if(tokenData && tokenData.id === id) {
-        db.models.User.get(id, function(page) {
-            if (page) {
-                res.writeHead(200, {
-                    'Content-Type': 'application/json'
-                });
+        const user = await User.get({ where: { id }});
+        if (user) {
+            res.writeHead(200, {
+                'Content-Type': 'application/json'
+            });
 
-                res.end(JSON.stringify(page));
-            } else {
-                error(res, 'Not found');
-            }
-        });
+            res.end(JSON.stringify(user));
+        } else {
+            error(res, 'Not found');
+        }
     } else {
         error(res, 'Forbidden');
     }
-};
+}
 
-export const update = (req, res) => {
+export function update(req, res) {
 
-};
+}
 
-export const del = (req, res) => {
+export function del(req, res) {
 
-};
+}
 

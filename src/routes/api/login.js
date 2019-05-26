@@ -1,4 +1,5 @@
-import db from '../../api/db';
+import User from '../../api/models/User';
+
 export async function post(req, res) {
     const { email, password } = req.body;
 
@@ -15,12 +16,11 @@ export async function post(req, res) {
     }
 
     try {
-        const user = await db.models.User.authenticate(email, password);
+        const token = await User.authenticate(email, password);
         res.writeHead(200, {
             'Content-Type': 'application/json'
         });
-        console.log('authenticated')
-        return res.end(JSON.stringify(user));
+        return res.end(JSON.stringify(token));
 
     } catch (err) {
         res.writeHead(400, {
