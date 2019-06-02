@@ -13,7 +13,8 @@ services:
     container_name: permaculture_node
     image: jeremiedubuis/permaculture:dev_node
     environment:
-      - SQL_PORT="8001"
-      - SQL_SERVER="http://37.187.21.224"
+      - SQL_HOST=db
     ports:
       - "8000:3000"
+    links:
+      - db
