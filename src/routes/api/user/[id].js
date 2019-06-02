@@ -13,15 +13,16 @@ function error (res, message) {
 
 export async function get(req, res) {
     const { id } = req.params;
-    const tokenData = getToken(req);
-    if(tokenData && tokenData.id === id) {
-        const user = await User.get({ where: { id }});
-        if (user) {
+    const tokenData = await getToken(req);
+
+    if(tokenData && tokenData.id === parseInt(id)) {
+        const { results } = await User.get({ where: { id }});
+        if (results && results.length) {
             res.writeHead(200, {
                 'Content-Type': 'application/json'
             });
 
-            res.end(JSON.stringify(user));
+            res.end(JSON.stringify(results[0]));
         } else {
             error(res, 'Not found');
         }

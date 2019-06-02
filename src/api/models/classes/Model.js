@@ -18,12 +18,11 @@ class Model {
     }
 
     async get({ where, sort } = {}, includePrivate) {
-        let fields = this.fields;
+        let fields = this.fields.get();
         if (!includePrivate) fields = fields.filter(({ isPrivate }) => !isPrivate );
-
         fields = fields.map(({ name }) => name ).join(', ');
         return await query(
-            `SELECT ${fields} FROM ${this.table} ${whereClause(where)} ${sortClause(sort)}`);
+            `SELECT id, ${fields} FROM ${this.table} ${whereClause(where)} ${sortClause(sort)}`);
 
     }
 

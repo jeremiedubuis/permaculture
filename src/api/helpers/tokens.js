@@ -1,17 +1,14 @@
 import jwt from 'jsonwebtoken';
-import { secret } from '../config';
+import { salt } from '../config';
+import cookie from 'cookie';
 
 export async function getToken(req) {
 
-    let token = req.headers['x-access-token'] || req.headers['authorization'];
-    if (token.startsWith('Bearer ')) {
-        // Remove Bearer from string
-        token = token.slice(7, token.length);
-    }
-
+    if (!req.headers['cookie']) return false;
+    let token = cookie.parse(req.headers['cookie']).token;
     if (!token) return false;
     try {
-        return !!jwt.verify(token, secret);
+        return jwt.verify(token, salt);
     } catch(err) {
         return false;
     }

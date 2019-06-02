@@ -1,6 +1,5 @@
 import mysql from 'mysql';
 import {mysql as config} from './config';
-
 const db = mysql.createConnection({
     host     : config.host,
     user     : config.user,

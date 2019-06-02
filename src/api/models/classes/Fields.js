@@ -6,6 +6,10 @@ class Fields {
         this.fields = fields.map(f => new Field(f));
     }
 
+    get() {
+        return this.fields;
+    }
+
     filter(f) {
         return this.fields.filter(f);
     }

@@ -1,13 +1,13 @@
 import hash from '../helpers/hash';
-import { secret } from '../config';
+import { salt } from '../config';
 import jwt from 'jsonwebtoken';
 import Model from './classes/Model';
 import {EMAIL, STRING} from './classes/Field';
 
 class User extends Model {
     async authenticate(email, password) {
-        const { results, fields } = await this.get({ where: { email } });
-        if (hash(password, results[0].password))
+        const { results, fields } = await this.get({ where: { email } }, true);
+        if (hash(password) === results[0].password)
             return User.authorize(results[0].id, results[0].email);
         throw new Error('invalid password');
     }
@@ -17,7 +17,7 @@ class User extends Model {
                 id: id,
                 email: email
             },
-            secret,
+            salt,
             { expiresIn: '24h' }
         );
     }
